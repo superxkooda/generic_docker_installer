@@ -1,19 +1,24 @@
-# Install docker on Pinebook Pro 
-A quick search did not yeld any results on a painless way to install docker so here is a quick utility to do so.
-This was written to work with the version of Debian that ships with the Pinebook Pro, though there should be no
-reason for it not to work on other flavors. This is not debian specific and it will set up systemd unless -n 
-option is passed. You must have sudo privileges to run this.
+# GENERIC DOCKER INSTALLER
 
-## Options 
-- -i : install path, defaults to /usr/local/bin
-- -g : auto add your current user account to the docker user group
-- -v : targeted docker version, defaults to 19.03.5
-- -n : skip setting up systemd
+This shell script will install Docker via the available pre compiled binaries available 
+on their site. All the binaries are downloaded from https://download.docker.com/linux/static/stable/.
+The systemd configs are grabbed from the appropriate version off of their github 
+https://github.com/docker/docker-ce
 
-## Example
-./install.sh -i /usr/bin -g
+```
+-v	What version to install, default value = 
+       usage: -v 19.03.5
+       available versions can be found here https://download.docker.com/linux/static/stable/.
 
-## Once Finished
-- If -g was used be sure to log out and in in order for the changes to take effect.
-- `systemctl enable docker` to start docker at boot.
-- Add any other accounts you wish to have access to docker.
+-p	Install path, default value = /usr/local/bin/.
+       usage: -p /usr/local/bin/
+
+-a	Set the targeted architecture, default value = aarch64.
+       Possible ones to choose from at this time are aarch64, armel, armhf, ppc64le, s390x, and x86_64.
+       usage: -a aarch64
+
+-n	If set this script won't set a systemd configs /etc/systemd/system/{docker,docker.socket}
+
+-g	Will add your current user to the docker group if not already in it.
+```
+After the install you may want to consider enabling docker for boot with `systemctl enable docker`.
