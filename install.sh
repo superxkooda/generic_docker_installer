@@ -5,17 +5,17 @@ install () {
 	echo "Installing Binaries";
 	local version=$1;
 	local install_dir=$2;
-	local arch=$3
+	local arch=$3;
 	local binary_url="https://download.docker.com/linux/static/stable/${arch}/docker-${version}.tgz";
 	curl -s ${binary_url} | sudo tar xvz --strip-components=1 -C ${install_dir};
-	grep -q docker /etc/group || sudo groupadd docker
+	grep -q docker /etc/group || sudo groupadd docker;
 	
 }
 
 config () {
 	echo "Configuring systemd.";
-	local version=$(awk 'BEGIN{FS="."}{print $1"."$2}' <<<"${1}");
-	local install_dir="$(sed 's/\//\\\//g'<<<${2})";
+	local version=$(awk 'BEGIN{FS="."}{print $1"."$2}' <<< "${1}");
+	local install_dir="$(sed 's/\//\\\//g' <<< ${2})";
 	local git_url="https://raw.githubusercontent.com/docker/docker-ce/${version}/components/engine/contrib/init/systemd/docker";
 	curl -s ${git_url}.service | sed "s/\/usr\/bin\//${install_dir}/" | sudo tee /etc/systemd/system/docker.service >/dev/null;
 	curl -s ${git_url}.socket | sudo tee /etc/systemd/system/docker.socket >/dev/null;
@@ -24,7 +24,7 @@ config () {
 add_2_docker () {
 	echo "Adding your curret account to the docker group";
 	user=$(whoami);
-	grep -q "docker" <<<$(groups ${user}) && \
+	grep -q "docker" <<< $(groups ${user}) && \
 		echo "${user} already in docker group. Nothing to do here :)" || \
 		sudo usermod -a -G docker ${user};
 }

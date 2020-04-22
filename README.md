@@ -22,3 +22,24 @@ https://github.com/docker/docker-ce
 -g	Will add your current user to the docker group if not already in it.
 ```
 After the install you may want to consider enabling docker for boot with `systemctl enable docker`.
+
+---
+
+I have included a silly [Dockerfile](Dockerfile) to play around with, It will create an image that will play zork.  
+It can be built like so:  
+
+```
+docker build -t zork .
+docker run -it --name zork zork
+```
+
+If ran like this one could save their game and quit. Then resume playing by
+
+```
+docker start -i zork
+```
+
+Then load by saying restore
+
+If you have never played I recomend and if you are curious about the company that made the game take a look at http://infocom-if.org.
+There is a lot of interesting information on their site. Zork 2 and 3 are there too.
